@@ -63,10 +63,13 @@ void mexFunction( int nlhs, mxArray *plhs[],
     }
 
     // Process
-    MSER mser(_delta, _min_area, _max_area, _max_variation, _min_diversity,
+    //MSER mser(_delta, _min_area, _max_area, _max_variation, _min_diversity,
+    //          _max_evolution, _area_threshold, _min_margin, _edge_blur_size);
+    Ptr<MSER> mser = MSER::create(_delta, _min_area, _max_area, _max_variation, _min_diversity,
               _max_evolution, _area_threshold, _min_margin, _edge_blur_size);
     Mat image(rhs[0].toMat());
-    vector<vector<Point> > msers;
-    mser(image, msers, mask);
-    plhs[0] = MxArray(msers);
+    //vector<vector<Point> > msers;
+    vector<KeyPoint> keypoints;
+    mser->detect(image, keypoints, mask);
+    plhs[0] = MxArray(keypoints);
 }
